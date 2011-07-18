@@ -1,0 +1,9 @@
+py_nano_ssr - provides a simple serial interface to IO Rodeo's solid state relay expansion
+board for the Arduino Nano. 
+
+Installation instructions can be found in the INSTALL file.
+
+For an examples demonstrating how to use the library see the examples directory. 
+
+py2scad may be freely distributed and modified in accordance with the Apache
+2.0  License.
