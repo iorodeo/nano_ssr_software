@@ -2,12 +2,16 @@
 //
 // Basic firmware for IO Rodeo's solid state relay exapansion board for the
 // Arduino Nano. Enables users to set the values of the relay uisng serial
-// communications.  Requires the  SerialReceiver library from the
+// communications.  
+//
+// Requires the  SerialReceiver library from the
 // iorodeo_arduino_libs http://bitbucket.org/iorodeo/iorodeo_arduino_libs.
+// and the Streaming library http://arduiniana.org/2009/04/new-streaming-library/
 //
 // Author: Will Dickson, IO Rodeo Inc.
 // 
 // ----------------------------------------------------------------------------
+#include <Streaming.h>
 #include "SerialReceiver.h"
 
 // Global variables
