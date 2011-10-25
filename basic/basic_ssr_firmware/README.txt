@@ -1,4 +1,4 @@
-nano_ssr_firmware.pde
+basic_ssr_firmware.pde
 
 Basic firmware for IO Rodeo's solid state relay exapansion board for the
 Arduino Nano. Enables users to set the values of the relay uisng serial
