@@ -34,10 +34,10 @@ classdef BasicSSR < handle
     
     methods
        
-        function self = NanoSSR(port)
-            % Creates a NanoSSR instance
+        function self = BasicSSR(port)
+            % Creates a BasicSSR instance
             if (nargin ~=1)
-                error('Usage: self = NanoSSR(port)');
+                error('Usage: self = BasicSSR(port)');
             end
             self.dev = serial( ...
                 port, ...
