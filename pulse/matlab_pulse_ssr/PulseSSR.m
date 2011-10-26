@@ -67,10 +67,10 @@ classdef PulseSSR < handle
         
         function open(self)
             % Opens a serial connection to the gap crossing control
-            % interface serice.
+            % interface serice.        
             fopen(self.ser);
             if self.resetDelay == true
-                pause(self.resetDelaySec)
+                pause(self.resetDelaySec);
             end;
         end
         
