@@ -1,5 +1,17 @@
+% PulseSSR: provides an interface to Arduino running the
+% pulse_ssr_firmware.
+%
+% Usage:
+%
+% dev = PulseSSR('com5') % Create an instance w/ com port = 'com5'
+% dev.open()             % Open the device
+% dev.setPeriod(0,500)   % sets the period for channel 0 to 500ms
+% dev.setNumPulse(0,10)  % Sets the number of pulses for channel 0 to 10
+% dev.start(0)           % Starts pulses on channel 0
+% dev.close()            % Closes the device.
+%
 classdef PulseSSR < handle
-    
+   
     properties
         ser = [];
         resetDelay = true;
