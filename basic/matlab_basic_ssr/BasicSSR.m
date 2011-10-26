@@ -4,12 +4,12 @@
 %
 % Usage:
 %
-% dev = NanoSSR(port)  % where port = com1, or com15, etc.
-% dev.setSSR(0, 1)     % Turns on SSR #0 
-% dev.setSSR(5, 0)     % Turns off SSR #5
-% dev.setAllSSR(1)     % Turns on all SSRs
+% dev = BasicSSR(port)  % where port = com1, or com15, etc.
+% dev.setSSR(0, 1)      % Turns on SSR #0 
+% dev.setSSR(5, 0)      % Turns off SSR #5
+% dev.setAllSSR(1)      % Turns on all SSRs
 % -------------------------------------------------------------------------
-classdef NanoSSR < handle
+classdef BasicSSR < handle
     
     properties
        dev = [];

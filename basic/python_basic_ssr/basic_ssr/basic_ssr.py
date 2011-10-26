@@ -20,10 +20,10 @@ limitations under the License.
 """
 import serial
 
-class pyNanoSSR(serial.Serial):
+class BasicSSR(serial.Serial):
 
     def __init__(self,**kwargs):
-        super(pyNanoSSR,self).__init__(**kwargs)
+        super(BasicSSR,self).__init__(**kwargs)
 
     def setSSR(self, ssrNum, ssrVal):
         """

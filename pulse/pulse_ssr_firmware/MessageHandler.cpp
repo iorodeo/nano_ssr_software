@@ -26,42 +26,43 @@ void MessageHandler::processMessage() {
     int cmdId;
 
     cmdId = readInt(0);
-#ifdef DEBUG_PRINT
-    Serial << "cmdId: " << cmdId << endl;
-#endif
 
     switch (cmdId) {
 
         case cmdStop:
-            sysState.stop();
+            setSysStatePin(&SystemState::stop);
             break;
 
         case cmdStart:
-            sysState.start();
+            setSysStatePin(&SystemState::start);
             break;
 
+        case cmdStartAll:
+            sysState.startAll();
+            break;
+
+        case cmdStopAll:
+            sysState.stopAll();
+            break;
+               
         case cmdSetPeriod:
-            handleSetValue(&SystemState::setPeriod);
+            setSysStateValue(&SystemState::setPeriod);
             break;
 
         case cmdGetPeriod:
-            Serial << sysState.getPeriod() << endl;
+            Serial << getSysStateValue(&SystemState::getPeriod) << endl;
             break;
             
         case cmdSetNumPulse:
-            handleSetValue(&SystemState::setNumPulse);
+            setSysStateValue(&SystemState::setNumPulse);
             break;
 
         case cmdGetNumPulse:
-            Serial << sysState.getNumPulse() << endl;
+            Serial << getSysStateValue(&SystemState::getNumPulse) << endl;
             break;
 
-        case cmdSetPowerLevel:
-            handleSetValue(&SystemState::setPowerLevel);
-            break;
-
-        case cmdGetPowerLevel:
-            Serial << sysState.getPowerLevel() << endl;
+        case cmdGetRunning:
+            Serial << getSysStateValue(&SystemState::getRunning) << endl;
             break;
 
         default:
@@ -70,11 +71,37 @@ void MessageHandler::processMessage() {
 
 }
 
-void MessageHandler::handleSetValue(SystemStateSetFunc setFunc) {
-    unsigned int value;
-    if (numberOfItems() >= 2) {
-        value = (unsigned int) readInt(1);
-        ((sysState).*(setFunc))(value);
+void MessageHandler::setSysStatePin(setPinFunc func) {
+    int n;
+    if (numberOfItems() >=2) {
+        n = readInt(1);
+        if (n >= 0) { 
+            ((sysState).*(func))(n);
+        }
     }
+}
+
+void MessageHandler::setSysStateValue(setValueFunc func) {
+    int n;
+    long value;
+    if (numberOfItems() >= 3) {
+        n = readInt(1);
+        value = readLong(2);
+        if ((n >= 0) && (value >= 0)) {
+            ((sysState).*(func))(n, value);
+        }
+    }
+}
+
+long MessageHandler::getSysStateValue(getValueFunc func) {
+    int n;
+    long value = -1;
+    if (numberOfItems() >= 2) {
+        n = readInt(1);
+        if ((n>=0) && (n<numSSR)) {
+            value = (long) ((sysState).*(func))(n);
+        }
+    }
+    return value;
 }
 

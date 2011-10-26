@@ -1,7 +1,7 @@
 import time
-from py_nano_ssr import pyNanoSSR
+from basic_ssr import BasicSSR
 
-dev = pyNanoSSR(port='/dev/ttyUSB0',timeout=1)
+dev = BasicSSR(port='/dev/ttyUSB0',timeout=1)
 time.sleep(2.0)  # Sleep for serial reset of arduino
 
 for i in range(0,8):

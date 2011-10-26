@@ -1,32 +1,34 @@
 #ifndef SystemState_h
 #define SystemState_h
-
-const unsigned int defaultNumPulse = 5;
-const unsigned int defaultPeriod = 1000;
-const unsigned int defaultPowerLevel = 100;
+#include "constants.h"
 
 class SystemState {
     public:
         SystemState();
-        void start();
-        void stop();
-        void setNumPulse(unsigned int value);
-        void setPeriod(unsigned int value);
-        void setPowerLevel(unsigned int value);
-        unsigned int getNumPulse();
-        unsigned int getPeriod();
-        unsigned int getPowerLevel();
-        unsigned int getPulseCnt();
-        void incrPulseCnt();
+        void initialize();
+        void start(unsigned int n);
+        void stop(unsigned int n);
+        void startAll();
+        void stopAll();
+        void setNumPulse(unsigned int n, unsigned long value);
+        void setPeriod(unsigned int n, unsigned long value);
+        unsigned long getNumPulse(unsigned int n);
+        unsigned long getPeriod(unsigned int n);
+        unsigned long getPulseCnt(unsigned int n);
+        unsigned long getRunning(unsigned int n);
+        void timerUpdate();
 
     private:
-        bool running;
-        unsigned int numPulse;
-        unsigned int period;
-        unsigned int powerLevel;
-        unsigned int pulseCnt;
+        bool running[numSSR];
+        unsigned long numPulse[numSSR];
+        unsigned long period[numSSR];
+        unsigned long pulseCnt[numSSR];
+        unsigned long timerCnt[numSSR];
+        void incrPulseCnt(unsigned int n);
 };
 
-typedef void (SystemState::*SystemStateSetFunc)(unsigned int);
+typedef void (SystemState::*setPinFunc)(unsigned int); 
+typedef void (SystemState::*setValueFunc)(unsigned int, unsigned long);
+typedef unsigned long (SystemState::*getValueFunc)(unsigned int);
 
 #endif

@@ -15,9 +15,9 @@ limitations under the License.
 """
 from setuptools import setup, find_packages
 
-setup(name='basic_ssr',
+setup(name='pulse_ssr',
       version='0.1',
-      description = 'serial library for communicating an Arduino running the basic_ssr_firmware',
+      description = 'serial library for communicating with an Arduino running the pulse_ssr_firmware',
       author = 'William Dickson, IO Rodeo Inc.',
       author_email = 'will@iorodeo.com',
       packages=find_packages(),

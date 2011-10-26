@@ -6,7 +6,7 @@ function nano_ssr_example(port)
 % dev = nano_ssr_example(port) where port = com1, or com14, etc. 
 %
 
-    dev = NanoSSR(port);
+    dev = BasicSSR(port);
     
     dev.open();
     
