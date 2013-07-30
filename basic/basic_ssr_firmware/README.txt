@@ -12,7 +12,7 @@ Streaming library: http://arduiniana.org/2009/04/new-streaming-library/
 Build instructions:
 
 1.) Place the SerialReceiver library directory in the users sketchbook/libraries folder.
-2.) Launch the Arduino IDE and open  nano_ssr_firmware.pde
+2.) Launch the Arduino IDE and open  nano_ssr_firmware.ino
 3.) Build the firmware and download to arduino.
 
 Testing from the arduion IDE. 
