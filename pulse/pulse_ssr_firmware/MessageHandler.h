@@ -1,6 +1,10 @@
 #ifndef MessageHandler_H
 #define MESSAGE_HANDLER_H
-#include <WProgram.h>
+#if defined(ARDUINO) && ARDUINO >= 100
+#include "Arduino.h"
+#else
+#include "WProgram.h"
+#endif
 #include "SerialReceiver.h"
 #include "constants.h"
 #include "SystemState.h"
