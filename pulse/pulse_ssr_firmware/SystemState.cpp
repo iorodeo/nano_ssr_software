@@ -11,7 +11,7 @@
 SystemState::SystemState() {
     for (int i=0; i<numSSR; i++) {
         numPulse[i] = defaultNumPulse;
-        period[i] = defaultPeriod;
+        period[i] = defaultPeriod_ms;
         running[i] = false;
         pulseCnt[i] = 0;
         timerCnt[i] = 0;

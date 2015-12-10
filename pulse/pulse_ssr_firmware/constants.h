@@ -5,10 +5,10 @@
 const unsigned long baudrate = 9600;
 const uint8_t numSSR = 8;
 const uint8_t ssrPin[numSSR] = {2,3,4,5,6,7,8,9};
-const unsigned long timerPeriod = 1000;
+const unsigned long timerPeriod_us = 1000; 
 
 const unsigned int defaultNumPulse = 5;
-const unsigned int defaultPeriod = 1000;
+const unsigned int defaultPeriod_ms = 1000; 
 
 // Serial command ids
 typedef enum {
