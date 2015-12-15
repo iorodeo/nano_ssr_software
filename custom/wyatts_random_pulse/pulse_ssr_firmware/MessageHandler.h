@@ -9,7 +9,8 @@
 #include "constants.h"
 #include "SystemState.h"
 
-class MessageHandler: public SerialReceiver {
+class MessageHandler: public SerialReceiver 
+{
     public:
         MessageHandler();
         void initialize(unsigned long baudrate);

@@ -5,7 +5,8 @@
 #include "Streaming.h"
 #include <stdlib.h>
 
-class SystemState {
+class SystemState 
+{
     public:
         SystemState();
         void initialize();

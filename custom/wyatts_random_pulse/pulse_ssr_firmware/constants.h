@@ -5,6 +5,8 @@
 const unsigned long baudrate = 9600;
 const uint8_t numSSR = 8;
 const uint8_t ssrPin[numSSR] = {2,3,4,5,6,7,8,9};
+const uint8_t numRandomPulsePin = 4;
+const uint8_t randomPulsePinInd[numRandomPulsePin] = {0,1,2,3}; 
 const unsigned long timerPeriod_us = 1000; 
 
 const unsigned int defaultNumberOfEvents = 1440;
@@ -17,7 +19,8 @@ const unsigned int minRandomPulseSeparation = 1000;
 
 
 // Serial command ids
-typedef enum {
+typedef enum 
+{
     cmdStop,                // 0 
     cmdStart,               // 1
     cmdStartAll,            // 2

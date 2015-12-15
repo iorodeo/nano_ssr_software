@@ -4,30 +4,36 @@
 extern SystemState sysState;
 
 
-MessageHandler::MessageHandler() {
-}
+MessageHandler::MessageHandler() 
+{ }
 
-void MessageHandler::initialize(unsigned long baudrate) {
+void MessageHandler::initialize(unsigned long baudrate) 
+{
     Serial.begin(baudrate);
 }
 
-void MessageHandler::update() { 
+void MessageHandler::update() 
+{ 
     // Check if message is available
-    while (Serial.available() > 0) {
+    while (Serial.available() > 0) 
+    {
         process(Serial.read());
-        if (messageReady()) {
+        if (messageReady()) 
+        {
             processMessage();
             reset();
         }
     }
 }
 
-void MessageHandler::processMessage() {
+void MessageHandler::processMessage() 
+{
     int cmdId;
 
     cmdId = readInt(0);
 
-    switch (cmdId) {
+    switch (cmdId) 
+    {
 
         case cmdStop:
             setSysStatePin(&SystemState::stop);
@@ -71,34 +77,43 @@ void MessageHandler::processMessage() {
 
 }
 
-void MessageHandler::setSysStatePin(setPinFunc func) {
+void MessageHandler::setSysStatePin(setPinFunc func) 
+{
     int n;
-    if (numberOfItems() >=2) {
+    if (numberOfItems() >=2) 
+    {
         n = readInt(1);
-        if (n >= 0) { 
+        if (n >= 0) 
+        { 
             ((sysState).*(func))(n);
         }
     }
 }
 
-void MessageHandler::setSysStateValue(setValueFunc func) {
+void MessageHandler::setSysStateValue(setValueFunc func) 
+{
     int n;
     long value;
-    if (numberOfItems() >= 3) {
+    if (numberOfItems() >= 3) 
+    {
         n = readInt(1);
         value = readLong(2);
-        if ((n >= 0) && (value >= 0)) {
+        if ((n >= 0) && (value >= 0)) 
+        {
             ((sysState).*(func))(n, value);
         }
     }
 }
 
-long MessageHandler::getSysStateValue(getValueFunc func) {
+long MessageHandler::getSysStateValue(getValueFunc func) 
+{
     int n;
     long value = -1;
-    if (numberOfItems() >= 2) {
+    if (numberOfItems() >= 2) 
+    {
         n = readInt(1);
-        if ((n>=0) && (n<numSSR)) {
+        if ((n>=0) && (n<numSSR)) 
+        {
             value = (long) ((sysState).*(func))(n);
         }
     }

@@ -11,8 +11,10 @@
 int compareULong(const void *x_, const void *y_);
 
 
-SystemState::SystemState() {
-    for (int i=0; i<numSSR; i++) {
+SystemState::SystemState() 
+{
+    for (int i=0; i<numSSR; i++) 
+    {
         numberOfEvents[i] = defaultNumberOfEvents;
         eventPeriod[i] = defaultEventPeriod_ms;
         numberOfRandomPulse[i] = defaultNumberOfRandomPulse;
@@ -25,31 +27,43 @@ SystemState::SystemState() {
         for (int j=0; j<maxNumberOfRandomPulse;j++)
         {
             randomPulseStart[i][j] = startPos;
-            startPos += defaultRandomPulseDuration + 10; 
+            startPos += defaultRandomPulseDuration + minRandomPulseSeparation; 
         }
     }
 }
 
-void SystemState::initialize() {
+void SystemState::initialize() 
+{
     // Set SSR IO pins to output and set to low
-    for (uint8_t i=0; i<numSSR; i++) {
+    for (uint8_t i=0; i<numSSR; i++) 
+    {
         pinMode(ssrPin[i], OUTPUT);
         digitalWrite(ssrPin[i],LOW);
     }
     randomSeed(analogRead(A0));
 }
 
-void SystemState::start(unsigned int n) {
-    // Start events on channel n
-    if (n < numSSR) {
+void SystemState::start(unsigned int n) 
+{
+    // HACK: only allow channel 0. This a hack for having multiple synchronized 
+    // random pulse pins. 
+    if (n != 0)
+    {
+        return;
+    }
 
-        ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+    // Start events on channel n
+    if (n < numSSR) 
+    {
+        ATOMIC_BLOCK(ATOMIC_RESTORESTATE) 
+        {
             running[n] = false;
         }
 
         generateRandomPulseStart(n);
 
-        ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+        ATOMIC_BLOCK(ATOMIC_RESTORESTATE) 
+        {
             eventCnt[n] = 0;
             timerCnt[n] = 0;
             randomPulseCnt[n] = 0;
@@ -61,7 +75,8 @@ void SystemState::start(unsigned int n) {
 void SystemState::stop(unsigned int n) {
     // Stop events on channel n
     if (n < numSSR) {
-        ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+        ATOMIC_BLOCK(ATOMIC_RESTORESTATE) 
+        {
             running[n] = false;
         }
     }
@@ -69,7 +84,8 @@ void SystemState::stop(unsigned int n) {
 
 void SystemState::startAll() {
     
-    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) 
+    {
         for (int i=0; i<numSSR; i++)
         {
             running[i] = false;
@@ -81,9 +97,18 @@ void SystemState::startAll() {
         generateRandomPulseStart(i);
     }
 
-    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-        for (int i=0; i<numSSR; i++) {
-            if (numberOfEvents[i] > 0) {
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) 
+    {
+        for (int i=0; i<numSSR; i++) 
+        {
+            // HACK: only allow channel 0. This a hack for having multiple synchronized 
+            // random pulse pins. 
+            if (i!=0)
+            {
+                continue;
+            }
+            if (numberOfEvents[i] > 0) 
+            {
                 eventCnt[i] = 0;
                 timerCnt[i] = 0;
                 randomPulseCnt[i] = 0;
@@ -93,61 +118,78 @@ void SystemState::startAll() {
     }
 }
 
-void SystemState::stopAll() {
-    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-        for (int i=0; i<numSSR; i++) {
+void SystemState::stopAll() 
+{
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) 
+    {
+        for (int i=0; i<numSSR; i++) 
+        {
             running[i] = false;
         }
     }
 }
 
-void SystemState::setNumberOfEvents(unsigned int n, unsigned long value) {
+void SystemState::setNumberOfEvents(unsigned int n, unsigned long value) 
+{
     // Set number of events for channel n
-    if (n < numSSR) {
+    if (n < numSSR) 
+    {
         numberOfEvents[n] = value;
     }
 }
 
-void SystemState::setEventPeriod(unsigned int n, unsigned long value) {
+void SystemState::setEventPeriod(unsigned int n, unsigned long value) 
+{
     // Set period of events for channel n
-    if (n < numSSR) {
+    if (n < numSSR) 
+    {
         eventPeriod[n] = value;
     }
 }
 
-unsigned long SystemState::getNumberOfEvents(unsigned int n) {
+unsigned long SystemState::getNumberOfEvents(unsigned int n) 
+{
     // Returns the number of events for channel n
-    if (n < numSSR) {
+    if (n < numSSR) 
+    {
         return numberOfEvents[n];
     }
 }
 
-unsigned long SystemState::getEventPeriod(unsigned int n) {
+unsigned long SystemState::getEventPeriod(unsigned int n) 
+{
     // Returns the  event period for channel n
-    if (n < numSSR) {
+    if (n < numSSR) 
+    {
         return eventPeriod[n];
     }
-    else {
+    else 
+    {
         return 0;
     }
 }
 
-unsigned long SystemState::getEventCnt(unsigned int n) {
+unsigned long SystemState::getEventCnt(unsigned int n) 
+{
     // Returns the current event cnt for channel n
     unsigned long value = 0;
-    if (n < numSSR) {
-        ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+    if (n < numSSR) 
+    {
+        ATOMIC_BLOCK(ATOMIC_RESTORESTATE) 
+        {
             value = eventCnt[n];
         }
     }
     return value;
 }
 
-unsigned long SystemState::getRunning(unsigned int n) {
+unsigned long SystemState::getRunning(unsigned int n) 
+{
     // Returns the running state for channel n
     unsigned long value = 0; 
     if (n < numSSR) {
-        ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+        ATOMIC_BLOCK(ATOMIC_RESTORESTATE) 
+        {
             value = (unsigned long) running[n];
         }
     }
@@ -162,7 +204,8 @@ void SystemState::generateRandomPulseStart(unsigned int n) {
     unsigned long startPos[maxNumberOfRandomPulse]; 
 
     // Generate start positions.
-    for (int i=0; i<numberOfRandomPulse[n]; i++) {
+    for (int i=0; i<numberOfRandomPulse[n]; i++) 
+    {
         unsigned long numPosition = eventPeriod[n]/pulsePlusMinSepDuration;
         startPos[i] = random(numPosition);
         for (int j=0;j<i; j++)
@@ -178,33 +221,27 @@ void SystemState::generateRandomPulseStart(unsigned int n) {
     qsort((void*)(startPos), numberOfRandomPulse[n], sizeof(unsigned long), compareULong);
 
     // Convert start positions to start counts (ms)
-    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) 
+    {
         for (int i=0; i<numberOfRandomPulse[n]; i++)
         {
             randomPulseStart[n][i] = startPos[i]*pulsePlusMinSepDuration;
         }
     }
-
-    // TEMP - Display pulses
-    Serial << " -- ssr " << n << endl;
-    for (int i=0; i<numberOfRandomPulse[n]; i++)
-    {
-        Serial << "  " << randomPulseStart[n][i] << " - " << randomPulseStart[n][i] + randomPulseDuration[n] << endl;
-    }
-    Serial << endl;
 }
 
 void SystemState::incrEventCnt(unsigned int n) {
     // Increments the pulse counter for channel n. Also, resets the
     // timer counter. If the pulse count is greater than or equal to 
     // the number of pulses setting the channel is stopped.
-    Serial << "incr event count: " << eventCnt[n] << "/" << numberOfEvents[n] << endl;
-    if (n < numSSR) {
+    if (n < numSSR) 
+    {
         eventCnt[n]++;
         timerCnt[n] = 0;
         randomPulseCnt[n] = 0;
         generateRandomPulseStart(n);
-        if (eventCnt[n] >= numberOfEvents[n]) {
+        if (eventCnt[n] >= numberOfEvents[n]) 
+        {
             running[n] = false;
         }
     }
@@ -219,43 +256,57 @@ void SystemState::incrRandomPulseCnt(unsigned int n)
 
         if (timerCnt[n] >= pulseStart)
         {
-            if (timerCnt[n] == pulseStart)
-            {
-                Serial << " ssr: " << n << ", e: " << eventCnt[n] << ", p: " << randomPulseCnt[n] << ", start, count = " << timerCnt[n]  << endl;
-            } 
-
             if (timerCnt[n] < pulseStop) 
             {
-                digitalWrite(ssrPin[n], HIGH);
+                for (int i=0; i<numRandomPulsePin; i++)
+                {
+                    uint8_t pinInd = randomPulsePinInd[i];
+                    digitalWrite(ssrPin[pinInd], HIGH);
+                }
             }
             else
             {
-                Serial << " ssr: " << n << ", e: " << eventCnt[n] << ", p: " << randomPulseCnt[n] << ", stop, count = "<< timerCnt[n]  << endl;
-                digitalWrite(ssrPin[n], LOW);
+                for (int i=0; i<numRandomPulsePin; i++)
+                {
+                    uint8_t pinInd = randomPulsePinInd[i];
+                    digitalWrite(ssrPin[pinInd], LOW);
+                }
                 randomPulseCnt[n]++;
             }
         }
     } 
-    else {
-        digitalWrite(ssrPin[n],LOW);
+    else 
+    {
+        for (int i=0; i<numRandomPulsePin; i++)
+        {
+            uint8_t pinInd = randomPulsePinInd[i];
+            digitalWrite(ssrPin[pinInd],LOW);
+        }
     }
 }
 
-void SystemState::timerUpdate() {
+void SystemState::timerUpdate() 
+{
     // Update function for timer callbacks.  Toggles the DIO for the pulses
-    for (int i=0; i<numSSR; i++) {
-
-        if (running[i]) {
-
+    // HACKED: for random pulse synchronization only using 0th channel
+    for (int i=0; i<1; i++)  
+    {
+        if (running[i]) 
+        {
             incrRandomPulseCnt(i);
-
             timerCnt[i]++;
-            if (timerCnt[i] >= eventPeriod[i]) {
+            if (timerCnt[i] >= eventPeriod[i]) 
+            {
                 incrEventCnt(i);
             }
         }
-        else {
-            digitalWrite(ssrPin[i],LOW); 
+        else 
+        {
+            for (int j=0; j<numRandomPulsePin; j++)
+            {
+                uint8_t pinInd = randomPulsePinInd[j];
+                digitalWrite(ssrPin[pinInd],LOW); 
+            }
         }
     }
 }
