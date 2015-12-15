@@ -1,0 +1,48 @@
+{
+    "duration" : 604800.0,
+    "vibration" : {
+        "port" : "ttyUSB0",
+        "events" : [
+            {
+                "startTime" : 21600.0   
+                "period"    : 60.0,
+                "number"    : 720,
+            },
+            {
+                "startTime" : 108000.0 
+                "period"    : 60.0,
+                "number"    : 720,
+            },
+            {
+                "startTime" : 194400.0, 
+                "period"    : 60.0,
+                "number"    : 720,
+            },
+            {
+                "startTime" : 280800.0, 
+                "period"    : 60.0,
+                "number"    : 720,
+            },
+            {
+                "startTime" : 367200.0,
+                "period"    : 60.0,
+                "number"    : 720,
+            },
+            {
+                "startTime" : 435600.0, 
+                "period"    : 60.0,
+                "number"    : 720,
+            },
+            {
+                "startTime" : 540000.0, 
+                "period"    : 60.0,
+                "number"    : 720,
+            }
+        ]
+    },
+    "display" : {
+        "arenaConfigId" : 1,
+        "events" : [],
+        "port" : "COM2" 
+    },
+}
